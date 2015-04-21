@@ -10,7 +10,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.awt.image.*;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
@@ -61,7 +65,8 @@ public class PlayArea extends JFrame{
 	   private Enemy curEnemy;
 	   private PowerUp curPower;
 	   private Ship DaShip = new Ship();
-	   
+	   BufferedImage tieFighter;
+	   //Constructor
 	   public DrawArea(){
 		   addMouseListener(new MouseHandler());
 		   addMouseMotionListener(new MouseMotionHandler()); 
@@ -73,7 +78,12 @@ public class PlayArea extends JFrame{
 		   Action populateEnemy = new PopulateEnemies();
 		   Action populatePowerUp = new PopulatePowerUps();
 	   
-	   
+		   tieFighter = null;
+		   try {
+			   tieFighter = ImageIO.read(new File("c:/DODGERGAMEIMAGES/Tie-Fighter-03-icon.png"));
+		   } catch (IOException e){
+			   
+		   }
 		   //Start the timers to repaint constantly
 		   gameTimer.start();
 		   popEnemiesTimer.start();
@@ -90,7 +100,9 @@ public class PlayArea extends JFrame{
 		   g2.setColor(Color.GREEN);
 		   g2.drawString("Lives: "+ shipLives, 1500, 650);
 		   g2.drawString("Score: "+ score, 20, 650);
-		   
+		   int moveImage = 1;
+		   moveImage = moveImage+10;
+		 //  g2.drawImage(tieFighter, 800, moveImage, this);
 		   if(shipDead == true){
 			  popEnemiesTimer.stop();
 			  popPowersTimer.stop();
@@ -272,6 +284,15 @@ public class PlayArea extends JFrame{
 				double randomX = (Math.random() * 1550);
 				double ycoord = -10;
 				curEnemy = new Enemy(randomX, ycoord);
+				//Make sure enemies don't spawn inside/on each other
+				for(Enemy enemy : enemyList){
+					while(curEnemy.intersects(enemy)){
+						randomX = (Math.random()*1600);
+						curEnemy.setCoords(randomX, ycoord);
+					}
+				}
+				
+				
 				enemyList.add(curEnemy);
 //				repaint();
 			}
@@ -309,7 +330,7 @@ public class PlayArea extends JFrame{
 		}
 	 
 	 
-     //repaints the frame every 3 miliseconds
+     //repaints the frame every milisecond
     public class TimerEventAction extends AbstractAction{
 	
 	public void actionPerformed(ActionEvent event){
