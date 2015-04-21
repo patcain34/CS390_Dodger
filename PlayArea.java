@@ -282,7 +282,7 @@ public class PlayArea extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				System.out.println("Populate enemy");
 				double randomX = (Math.random() * 1550);
-				double ycoord = -10;
+				double ycoord = -15;
 				curEnemy = new Enemy(randomX, ycoord);
 				// Make sure enemies don't spawn inside/on each other
 				for (Enemy enemy : enemyList) {
@@ -303,7 +303,8 @@ public class PlayArea extends JFrame {
 				System.out.println("Populate powerup");
 				double randomX = (Math.random() * 1600);
 				double ycoord = -5;
-				curPower = new PowerUp(randomX, ycoord, 2);
+				double randomType = (Math.random());
+				curPower = new PowerUp(randomX, ycoord, randomType);
 				// make sure power up doesnt spawn inside an enemy
 				for (Enemy enemy : enemyList) {
 					while (curPower.intersects(enemy)) {
@@ -340,18 +341,18 @@ public class PlayArea extends JFrame {
 				// PowerUp hit detection
 				for (PowerUp powerUp : powerUpList) {
 					if (powerUp.intersects(DaShip)) {
-						if (powerUp.getType() == 1) {
+						if (powerUp.getType() < .33) {
 							DaShip.shrinkShip();
 							// powerActionTimer.setDelay(5000);
 							powerActionTimer.start();
 							repaint();
 						}
-						if (powerUp.getType() == 2) {
+						if (powerUp.getType() >= .33 && powerUp.getType() < .66) {
 							// powerActionTimer.setDelay(7);
 							powerActionTimer.start();
-							powerActionTimer.setDelay(7);
+							gameTimer.setDelay(7);
 						}
-						if (powerUp.getType() == 3) {
+						if (powerUp.getType() >= .66) {
 							score = score + 1;
 						}
 					}
@@ -363,7 +364,7 @@ public class PlayArea extends JFrame {
 
 			public void actionPerformed(ActionEvent event) {
 				DaShip.normalSize();
-				powerActionTimer.setDelay(0);
+				gameTimer.setDelay(1);
 				powerActionTimer.stop();
 			}
 

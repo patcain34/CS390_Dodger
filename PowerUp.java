@@ -4,10 +4,10 @@ import java.awt.geom.Rectangle2D;
 public class PowerUp extends Rectangle2D.Double {
 	private static final double height = 25;
 	private static final double width = 25;
-	private int type;
+	private double type;
     private boolean isFinished = false;
     
-	public PowerUp(double x, double y, int t) {
+	public PowerUp(double x, double y, double t) {
 		super(x, y, width, height);
 		type = t;
 	}
@@ -37,7 +37,9 @@ public class PowerUp extends Rectangle2D.Double {
 	public void setBool(boolean bool){
 		isFinished = bool;
 	}
-	
+	public double getType(){
+		return type;
+	}
 	
 	
 }
