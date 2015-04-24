@@ -3,6 +3,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -56,17 +57,15 @@ public class PlayArea extends JFrame {
 		private Timer popEnemiesTimer;
 		private Timer popPowersTimer;
 		public Timer powerActionTimer;
-		public Timer restartTimer = new Timer(3000,
-				new RestartTimerEventAction());
+		public Timer restartTimer = new Timer(3000, new RestartTimerEventAction());
 		public Timer gameTimer = new Timer(milisec, new TimerEventAction());
-		public Timer movementTimer = new Timer(100,
-				new MovementTimerEventAction());
+		public Timer movementTimer = new Timer(100, new MovementTimerEventAction());
 		public Timer scoreTimer = new Timer(2000, new ScoreTimerEventAction());
 		// objects
 		private Enemy curEnemy;
 		private PowerUp curPower;
 		private Ship DaShip = new Ship();
-		BufferedImage tieFighter;
+		private Image gameBackground;
 
 		// Constructor
 		public DrawArea() {
@@ -80,14 +79,17 @@ public class PlayArea extends JFrame {
 
 			Action populateEnemy = new PopulateEnemies();
 			Action populatePowerUp = new PopulatePowerUps();
-
-			tieFighter = null;
+			
+			//Set background
+			gameBackground = null;
 			try {
-				tieFighter = ImageIO.read(new File(
-						"c:/DODGERGAMEIMAGES/Tie-Fighter-03-icon.png"));
+				gameBackground = ImageIO.read(new File(
+						"c:/DODGERGAMEIMAGES/stars.jpg"));
 			} catch (IOException e) {
 
 			}
+
+			
 			// Start the timers to repaint constantly
 			gameTimer.start();
 			popEnemiesTimer.start();
@@ -99,14 +101,14 @@ public class PlayArea extends JFrame {
 
 		public void paint(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
-			g2.setColor(Color.BLACK);
-			g2.fillRect(0, 0, getWidth(), getHeight());
+			
+			g2.drawImage(gameBackground, 0, 0, 1600, 720, this);
+		//	g2.setColor(Color.BLACK);
+		//	g2.fillRect(0, 0, getWidth(), getHeight());
 			g2.setColor(Color.GREEN);
 			g2.drawString("Lives: " + shipLives, 1500, 650);
 			g2.drawString("Score: " + score, 20, 650);
-			int moveImage = 1;
-			moveImage = moveImage + 10;
-			// g2.drawImage(tieFighter, 800, moveImage, this);
+			
 			if (shipDead == true) {
 				popEnemiesTimer.stop();
 				popPowersTimer.stop();
@@ -117,29 +119,42 @@ public class PlayArea extends JFrame {
 
 				if (shipLives > 0) {
 					g2.setColor(Color.RED);
-					g2.drawString("You Died", 1600 / 2, 720 / 2);
+					g2.drawString("You Died", 1600 / 2, (720/2)-60);
 					restartTimer.start();
 				} else {
 					g2.setColor(Color.RED);
-					g2.drawString("GAME OVER!!", 1600 / 2, 720 / 2);
+					g2.drawString("GAME OVER!!", 1600 / 2, (720/2)-60);
 				}
 			} else {
 
 				g2.setPaint(Color.GREEN);
-				g2.fill(DaShip);
-				g2.draw(DaShip);
-				g2.setColor(Color.RED);
+			//	g2.fill(DaShip);
+				int shipX = (int) DaShip.getX();
+				int shipY = (int) DaShip.getY();
+				
+				g2.drawImage(DaShip.getImage(), shipX , shipY, DaShip.get_HEIGHT(), DaShip.get_WIDTH(), this);
+				g2.setColor(Color.BLACK);
 
 				for (Enemy e : enemyList) {
-					e.setCoords(e.getX(), e.getY() + 1);
-					g2.fill(e);
-					g2.draw(e);
+					e.setCoords(e.getX(), e.getY() + 3);
+			//		g2.fill(e);
+					int newX = (int) e.getX();
+					int newY = (int) e.getY();
+					if(e.getType() >= .66){
+						g2.drawImage(e.getImage(), newX-19, newY-19, 95, 95, this);
+					}
+					else{
+						g2.drawImage(e.getImage(), newX-14, newY+3, 75, 75, this);
+					}
 				}
 				for (PowerUp p : powerUpList) {
-					p.setCoords(p.getX(), p.getY() + 1);
+					p.setCoords(p.getX(), p.getY() + 3);
 					g2.setColor(Color.CYAN);
-					g2.fill(p);
-					g2.draw(p);
+				//	g2.fill(p);
+					int newX = (int) p.getX();
+					int newY = (int) p.getY();
+					
+					g2.drawImage(p.getImage(), newX, newY, 25, 25, this);
 				}
 			}
 
@@ -282,7 +297,7 @@ public class PlayArea extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				System.out.println("Populate enemy");
 				double randomX = (Math.random() * 1550);
-				double ycoord = -15;
+				double ycoord = -25;
 				curEnemy = new Enemy(randomX, ycoord);
 				// Make sure enemies don't spawn inside/on each other
 				for (Enemy enemy : enemyList) {
@@ -351,6 +366,7 @@ public class PlayArea extends JFrame {
 							// powerActionTimer.setDelay(7);
 							powerActionTimer.start();
 							gameTimer.setDelay(7);
+							popEnemiesTimer.setDelay(500);
 						}
 						if (powerUp.getType() >= .66) {
 							score = score + 1;
@@ -365,6 +381,7 @@ public class PlayArea extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				DaShip.normalSize();
 				gameTimer.setDelay(1);
+				popEnemiesTimer.setDelay(100);
 				powerActionTimer.stop();
 			}
 
