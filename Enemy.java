@@ -28,7 +28,7 @@ public class Enemy extends Rectangle2D.Double {
 			enemyImage = null;
 			try {
 				enemyImage = ImageIO.read(new File(
-						"c:/DODGERGAMEIMAGES/TieFighter-icon.png"));
+						"c:/DODGERGAMEIMAGES/vader-ship2.png"));
 			} catch (IOException e) {
 
 			}
