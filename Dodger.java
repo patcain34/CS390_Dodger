@@ -16,6 +16,7 @@ public class Dodger{
 		         {
 		            public void run()
 		            {
+		              
 		               JFrame frame = new PlayArea();
 		               frame.setTitle("Dodger!");
 		               frame.setSize(1600, 720);

@@ -13,6 +13,7 @@ public class Ship extends Rectangle2D.Double {
 	private double xCoord = 720;
 	private double yCoord = 600;
 	private Image shipImage;
+	
 	public Ship() {
 		super(720, 300, WIDTH, HEIGHT);
 		shipImage = null;
@@ -62,6 +63,9 @@ public class Ship extends Rectangle2D.Double {
 	}
 	public Image getImage(){
 		return shipImage;
+	}
+	public void setImage(Image newImage){
+		shipImage = newImage;
 	}
 
 }
