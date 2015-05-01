@@ -3,6 +3,7 @@
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -11,7 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -42,7 +42,7 @@ public class PlayArea extends JFrame {
 	public boolean shipDead = false;
 	public boolean shipPoweredUp = false;
 	public boolean DrawGame = false;
-	//sound
+	// sound
 	public AudioClip song;
 	public URL songPath;
 	public AudioClip song2;
@@ -55,105 +55,93 @@ public class PlayArea extends JFrame {
 	public URL explosionPath2;
 	public AudioClip explosion3;
 	public URL explosionPath3;
-	
-	
+
 	public PlayArea() {
 		buttonPanel = new JPanel();
 		DrawArea myDrawArea = new DrawArea();
-		
-		JButton Start = new JButton("START", new ImageIcon("c:/DODGERGAMEIMAGES/TieFighter-icon.png"));
-		JButton Quit = new JButton("QUIT", new ImageIcon("c:/DODGERGAMEIMAGES/TieFighter-icon.png"));
-		
+
+		JButton Start = new JButton("START", new ImageIcon(
+				"c:/DODGERGAMEIMAGES/TieFighter-icon.png"));
+		JButton Quit = new JButton("QUIT", new ImageIcon(
+				"c:/DODGERGAMEIMAGES/TieFighter-icon.png"));
+
 		StartAction ActionStart = new StartAction();
-	//	Action ActionQuit = new QuitAction();
-		
-		
-		
+		// Action ActionQuit = new QuitAction();
+
 		buttonPanel.add(Start, ActionStart);
-	//	buttonPanel.add(Quit, ActionQuit);
-	//	DrawGame = false;
-	//	add(buttonPanel);
-		
-		//Load all sounds
-		try{
+		// buttonPanel.add(Quit, ActionQuit);
+		// DrawGame = false;
+		// add(buttonPanel);
+
+		// Load all sounds
+		try {
 			songPath = new URL("file:c:/DODGERGAMEIMAGES/Cantina1.mid");
 			song = Applet.newAudioClip(songPath);
+		} catch (Exception e) {
 		}
-		catch(Exception e){
-		}
-		try{
+		try {
 			songPath2 = new URL("file:c:/DODGERGAMEIMAGES/theme.mid");
 			song2 = Applet.newAudioClip(songPath2);
+		} catch (Exception e) {
 		}
-		catch(Exception e){
-		}
-		try{
+		try {
 			songPath3 = new URL("file:c:/DODGERGAMEIMAGES/Cantina1.mid");
 			song3 = Applet.newAudioClip(songPath3);
+		} catch (Exception e) {
 		}
-		catch(Exception e){
-		}
-		try{
+		try {
 			explosionPath = new URL("file:c:/DODGERGAMEIMAGES/yodalaughing.wav");
 			explosion = Applet.newAudioClip(explosionPath);
+		} catch (Exception e) {
 		}
-		catch(Exception e){
-		}
-		try{
+		try {
 			explosionPath2 = new URL("file:c:/DODGERGAMEIMAGES/chewyroar.wav");
 			explosion2 = Applet.newAudioClip(explosionPath2);
+		} catch (Exception e) {
 		}
-		catch(Exception e){
-		}
-		try{
-			explosionPath3 = new URL("file:c:/DODGERGAMEIMAGES/jabbalaughing.wav");
+		try {
+			explosionPath3 = new URL(
+					"file:c:/DODGERGAMEIMAGES/jabbalaughing.wav");
 			explosion3 = Applet.newAudioClip(explosionPath3);
+		} catch (Exception e) {
 		}
-		catch(Exception e){
-		}
-		
+
 		int randomSong = randomize();
-		if(randomSong == 1){
+		if (randomSong == 1) {
 			song.loop();
-		}else if(randomSong ==2){
+		} else if (randomSong == 2) {
 			song2.loop();
-		}else if(randomSong == 3 ){
+		} else if (randomSong == 3) {
 			song3.loop();
 		}
-			add(myDrawArea);
-		
-		
+		add(myDrawArea);
+
 	}
-	
-	public int randomize(){
+
+	public int randomize() {
 		double randomVar = Math.random();
-		
+
 		if (randomVar < .33) {
 			return 1;
-			
-		}
-		else if (randomVar>= .33 && randomVar < .66) {
+
+		} else if (randomVar >= .33 && randomVar < .66) {
 			return 2;
-			
-		}
-		else if (randomVar >= .66) {
+
+		} else if (randomVar >= .66) {
 			return 3;
-			
-		}
-		else{
+
+		} else {
 			return 1;
 		}
-		
+
 	}
-	
 
 	public class StartAction extends AbstractAction {
 		public void actionPerformed(ActionEvent event) {
 			DrawGame = true;
-			
+
 		}
 
-		
 	}
 
 	// DrawArea is where all the graphics stuff takes place!
@@ -171,9 +159,11 @@ public class PlayArea extends JFrame {
 		private Timer popEnemiesTimer;
 		private Timer popPowersTimer;
 		public Timer powerActionTimer;
-		public Timer restartTimer = new Timer(3000, new RestartTimerEventAction());
+		public Timer restartTimer = new Timer(3000,
+				new RestartTimerEventAction());
 		public Timer gameTimer = new Timer(milisec, new TimerEventAction());
-		public Timer movementTimer = new Timer(100, new MovementTimerEventAction());
+		public Timer movementTimer = new Timer(100,
+				new MovementTimerEventAction());
 		public Timer scoreTimer = new Timer(2000, new ScoreTimerEventAction());
 		// objects
 		private Enemy curEnemy;
@@ -193,8 +183,8 @@ public class PlayArea extends JFrame {
 
 			Action populateEnemy = new PopulateEnemies();
 			Action populatePowerUp = new PopulatePowerUps();
-			
-			//Set background
+
+			// Set background
 			gameBackground = null;
 			try {
 				gameBackground = ImageIO.read(new File(
@@ -202,7 +192,7 @@ public class PlayArea extends JFrame {
 			} catch (IOException e) {
 
 			}
-			
+
 			// Start the timers to repaint constantly
 			gameTimer.start();
 			popEnemiesTimer.start();
@@ -214,47 +204,31 @@ public class PlayArea extends JFrame {
 
 		public void paint(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 			g2.drawImage(gameBackground, 0, 0, 1600, 720, this);
-		//	g2.setColor(Color.BLACK);
-		//	g2.fillRect(0, 0, getWidth(), getHeight());
+			// g2.setColor(Color.BLACK);
+			// g2.fillRect(0, 0, getWidth(), getHeight());
 			g2.setColor(Color.GREEN);
+			g2.setFont(new Font("Courier", Font.BOLD, 18));
 			g2.drawString("Lives: " + shipLives, 1500, 650);
 			g2.drawString("Score: " + score, 20, 650);
-			if(score >= 100 && score < 250){
+			if (score >= 100 && score < 250) {
 				speed = 2;
 			}
-			if(score >= 250 && score < 500){
+			if (score >= 250 && score < 500) {
 				speed = 2;
 				popEnemiesTimer.setDelay(75);
 			}
-			if(score >= 500 && score < 750){
+			if (score >= 500 && score < 750) {
 				speed = 3;
 			}
-			if(score >= 750 && score < 1000){
+			if (score >= 750 && score < 1000) {
 				speed = 4;
 			}
-			if(score >= 1000){
+			if (score >= 1000) {
 				speed = 6;
 			}
-			
+
 			if (shipDead == true) {
 				popEnemiesTimer.stop();
 				popPowersTimer.stop();
@@ -265,42 +239,46 @@ public class PlayArea extends JFrame {
 
 				if (shipLives > 0) {
 					g2.setColor(Color.RED);
-					g2.drawString("You Died", 1600 / 2, (720/2)-90);
+					g2.setFont(new Font("Haettenschweiler", Font.BOLD, 75));
+					g2.drawString("You Died", (1600 / 2) - 200, (720 / 2));
 					restartTimer.start();
 				} else {
 					g2.setColor(Color.RED);
-					g2.drawString("GAME OVER!!", 1600 / 2, (720/2)-90);
-					
+					g2.setFont(new Font("Haettenschweiler", Font.BOLD, 100));
+					g2.drawString("GAME OVER!!", (1600 / 2) - 350, (720 / 2));
+
 				}
 			} else {
 
 				g2.setPaint(Color.GREEN);
-			//	g2.fill(DaShip);
+				// g2.fill(DaShip);
 				int shipX = (int) DaShip.getX();
 				int shipY = (int) DaShip.getY();
-				
-				g2.drawImage(DaShip.getImage(), shipX , shipY, DaShip.get_HEIGHT(), DaShip.get_WIDTH(), this);
+
+				g2.drawImage(DaShip.getImage(), shipX, shipY,
+						DaShip.get_HEIGHT(), DaShip.get_WIDTH(), this);
 				g2.setColor(Color.BLACK);
 
 				for (Enemy e : enemyList) {
 					e.setCoords(e.getX(), e.getY() + speed);
-			//		g2.fill(e);
+					// g2.fill(e);
 					int newX = (int) e.getX();
 					int newY = (int) e.getY();
-					if(e.getType() >= .66){
-						g2.drawImage(e.getImage(), newX-19, newY-19, 95, 95, this);
-					}
-					else{
-						g2.drawImage(e.getImage(), newX-14, newY+3, 75, 75, this);
+					if (e.getType() >= .66) {
+						g2.drawImage(e.getImage(), newX - 19, newY - 19, 95,
+								95, this);
+					} else {
+						g2.drawImage(e.getImage(), newX - 14, newY + 3, 75, 75,
+								this);
 					}
 				}
 				for (PowerUp p : powerUpList) {
 					p.setCoords(p.getX(), p.getY() + speed);
 					g2.setColor(Color.CYAN);
-				//	g2.fill(p);
+					// g2.fill(p);
 					int newX = (int) p.getX();
 					int newY = (int) p.getY();
-					
+
 					g2.drawImage(p.getImage(), newX, newY, 25, 25, this);
 				}
 			}
@@ -379,11 +357,8 @@ public class PlayArea extends JFrame {
 		}
 
 		// new stuff
-		// ///////////////////////////////////////////////////////////////////////////////////		
-		
-		
-		
-		
+		// ///////////////////////////////////////////////////////////////////////////////////
+
 		public class RestartTimerEventAction extends AbstractAction {
 			public void actionPerformed(ActionEvent event) {
 				// change state
@@ -436,7 +411,6 @@ public class PlayArea extends JFrame {
 						powerUpList.get(j).incCoords(0, 10);
 				}
 
-				
 			}
 		}
 
@@ -455,7 +429,7 @@ public class PlayArea extends JFrame {
 				}
 
 				enemyList.add(curEnemy);
-				
+
 			}
 		}
 
@@ -474,22 +448,19 @@ public class PlayArea extends JFrame {
 					}
 				}
 				powerUpList.add(curPower);
-				
+
 			}
 		}
 
 		public void removeEnemy(int i) {
 			enemyList.remove(i);
-			
 
 		}
 
 		public void removePowerUp(int i) {
 			powerUpList.remove(i);
-			
 
 		}
-		
 
 		public class TimerEventAction extends AbstractAction {
 			// repaints the frame every milisecond
@@ -497,19 +468,18 @@ public class PlayArea extends JFrame {
 				for (Enemy enemy : enemyList) {
 					if (enemy.intersects(DaShip)) {
 						shipDead = true;
-						if(shipLives > 0){
+						if (shipLives > 0) {
 							int random = randomize();
-							
-						
-							if(random == 1){
+
+							if (random == 1) {
 								explosion.play();
-							}else if(random == 2){
+							} else if (random == 2) {
 								explosion2.play();
-							}else if(random == 3){
+							} else if (random == 3) {
 								explosion3.play();
 							}
 						}
-	
+
 					}
 				}
 				// PowerUp hit detection
@@ -518,20 +488,19 @@ public class PlayArea extends JFrame {
 						if (powerUp.getType() < .33) {
 							DaShip.shrinkShip();
 							powerActionTimer.start();
-							
-						}
-						else if (powerUp.getType() >= .33 && powerUp.getType() < .66) {
+
+						} else if (powerUp.getType() >= .33
+								&& powerUp.getType() < .66) {
 							powerActionTimer.start();
 							enemyList.clear();
-							
-						}
-						else if (powerUp.getType() >= .66) {
+
+						} else if (powerUp.getType() >= .66) {
 							score = score + 5;
-							
+
 						}
 					}
 				}
-			repaint();
+				repaint();
 			}
 		}
 
