@@ -63,6 +63,7 @@ public class PlayArea extends JFrame {
 	public URL powerPath3;
 	public Image possibleShip1 = null;
 	public Image possibleShip2 = null;
+	public Image possibleShip3 = null;
 	
 	public enum STATE{
 		MENU,
@@ -140,6 +141,12 @@ public class PlayArea extends JFrame {
 		try {
 			possibleShip2 = ImageIO.read(new File(
 					"c:/DODGERGAMEIMAGES/AOTC fighter.png"));
+		} catch (IOException e) {
+
+		}
+		try {
+			possibleShip3 = ImageIO.read(new File(
+					"c:/DODGERGAMEIMAGES/falcon2.png"));
 		} catch (IOException e) {
 
 		}
@@ -288,6 +295,7 @@ public class PlayArea extends JFrame {
 					g2.setFont(new Font("Haettenschweiler", Font.BOLD, 75));
 					g2.drawString("GAME OVER!!", (1600/2) - 80, (720/2)-90);
 					restartTimer.start();
+					speed = 1;
 				}
 			} else {
 
@@ -376,6 +384,11 @@ public class PlayArea extends JFrame {
 				  if(mouseX >= 770 && mouseX <=770 + 150){
 					  if(mouseY >= 350 && mouseY <= 400){
 						  DaShip.setImage(possibleShip2);
+					  }
+				  }
+				  if(mouseX >= 770 && mouseX <=770 + 150){
+					  if(mouseY >= 450 && mouseY <= 500){
+						  DaShip.setImage(possibleShip3);
 					  }
 				  }
 			  }

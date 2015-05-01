@@ -16,6 +16,7 @@ public class Menu{
 	public Rectangle quit = new Rectangle(800-30, 450, 150, 50);
 	public Rectangle altShip = new Rectangle(800-30, 250, 150, 50);
 	public Rectangle altShip2 = new Rectangle(800-30, 350, 150, 50);
+	public Rectangle altShip3 = new Rectangle(800-30, 450, 150, 50);
 	
 	
 	
@@ -31,10 +32,12 @@ public class Menu{
 		g2.setFont(buttons);
 		g2.drawString("PLAY", play.x +34, play.y+35);
 		g2.draw(play);
-		g2.drawString("X-WING", altShip.x +34, altShip.y+35);
+		g2.drawString("X-WING", altShip.x +26, altShip.y+35);
 		g2.draw(altShip);
 		g2.drawString("AOTC", altShip2.x +34, altShip2.y+35);
 		g2.draw(altShip2);
+		g2.drawString("MF (Def)", altShip3.x +20, altShip3.y+35);
+		g2.draw(altShip3);
 		
 	}
 
